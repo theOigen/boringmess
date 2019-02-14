@@ -79,7 +79,7 @@ router.post('/', Auth.verifyToken, async (req, res) => {
         const content = reqCont ? reqCont.trim() : '';
         const message = new Message(0, content, fileAttachment ? fileAttachment : null,
             user._id, req.body.chat, new Date());
-        const [newMessId, chatUpdRes] = await Promise.all([
+        const [newMessId] = await Promise.all([
             Message.insert(message), Chat.update(chat._id, { lastUpdate: message.created })
         ]);
         const newMessage = await Message.getByIdWithUser(newMessId);
@@ -140,7 +140,7 @@ router.delete('/:id', Auth.verifyToken, async (req, res) => {
             deletePromises.push(Attachment.delete(message.attachment._id));
         }
 
-        const [deleteResult, destroyResult, deleteAttachment] = await Promise.all(deletePromises);
+        const [deleteResult] = await Promise.all(deletePromises);
 
         const lastMessage = await utils.getChatLastMessage(chat._id.toString());
         if (lastMessage) {

@@ -19,7 +19,7 @@ router.post('/register', async (req, res) => {
     try {
         const user = await User.getByLogin(login);
         if (user) {
-            res.status(400).json({ error: "Username already exist" });
+            res.status(400).json({ error: 'Username already exist' });
         } else {
             const user = new User(0, login, hash, 0, fullname);
             const registred = await User.insertUser(user);
