@@ -39,7 +39,7 @@ export default {
     },
     pageRange: {
       type: Number,
-      default: 2
+      default: 3
     },
     activeColor: {
       type: String,
@@ -52,14 +52,14 @@ export default {
   },
   computed: {
     pages() {
-      let pages = [];
+      const pages = [];
       for (let i = this.rangeStart; i <= this.rangeEnd; i++) {
         pages.push(i);
       }
       return pages;
     },
     rangeStart() {
-      let start = this.current - this.pageRange;
+      const start = this.current - this.pageRange;
       if (start > 0) {
         return start;
       } else {
@@ -67,7 +67,7 @@ export default {
       }
     },
     rangeEnd() {
-      let end = this.current + this.pageRange;
+      const end = this.current + this.pageRange;
       return end < this.total ? end : this.total;
     },
     nextPage() {
