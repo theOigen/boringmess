@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { validUrl } = require('../modules/utils');
 
 const AttachmentSchema = mongoose.Schema({
     mediaUrl: { type: String, required: true },
@@ -7,7 +8,6 @@ const AttachmentSchema = mongoose.Schema({
 
 const AttachmentModel = mongoose.model('Attachment', AttachmentSchema);
 
-const regexUrl = /^((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/;
 class Attachment {
     constructor(url, type) {
         this.mediaUrl = url;
@@ -53,7 +53,7 @@ class Attachment {
 
     static validateAttachment(a) {
         return a && a.mediaUrl !== undefined && a.fileType !== undefined
-            && regexUrl.test(a.mediaUrl) && this.validType(a.fileType);
+            && validUrl(a.mediaUrl) && this.validType(a.fileType);
     }
 }
 

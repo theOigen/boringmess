@@ -37,12 +37,12 @@ const fileUpload = util.promisify(upload);
 const fileDestroy = util.promisify(destroy);
 
 module.exports = {
-    isChatOwner: async function (userId, chatId) {
+    async isChatOwner(userId, chatId) {
         const chatCreator = await Chat.getChatOwner(chatId);
         return userId === chatCreator._id.toString();
     },
 
-    lastMessages: function (chats) {
+    lastMessages(chats) {
         const proms = [];
         for (let chat of chats) {
             proms.push(Message.findLastInChat(chat._id.toString())
@@ -60,12 +60,12 @@ module.exports = {
         return Promise.all(proms);
     },
 
-    getChatLastMessage: async function (chatId) {
+    async getChatLastMessage(chatId) {
         const message = await Message.findLastInChat(chatId);
         return message;
     },
 
-    setChatLastMessage: async function (chat) {
+    async setChatLastMessage(chat) {
         const lastMessage = await this.getChatLastMessage(chat._id.toString());
         if (!lastMessage)
             chat.lastMessage = '';
@@ -75,7 +75,7 @@ module.exports = {
             chat.lastMessage = 'Media File';
     },
 
-    deleteChatHistory: async function (chatId) {
+    async deleteChatHistory(chatId) {
         let delProms = [];
         try {
             const messages = await Message.getHist(chatId, 0, 0);
@@ -95,27 +95,27 @@ module.exports = {
         }
     },
 
-    hidePasswords: function (users) {
+    hidePasswords(users) {
         for (let user of users) {
             user.hashedPass = undefined;
         }
     },
 
-    checkFiles: function (files) {
-        return files && files.image && (files.image.mimetype === "image/png"
-            || files.image.mimetype === "image/jpeg");
+    checkFiles(files) {
+        return files && files.image && (files.image.mimetype === 'image/png'
+            || files.image.mimetype === 'image/jpeg');
     },
 
-    getFileType: function (file) {
+    getFileType(file) {
         const fileType = file.mimetype;
-        const type = fileType.substring(0, fileType.indexOf('/'));
+        let type = fileType.substring(0, fileType.indexOf('/'));
         if (type !== 'audio' && type !== 'video' && type !== 'image') {
             type = 'raw';
         }
         return type;
     },
 
-    checkUserBody: function (req) {
+    checkUserBody(req) {
         return this.checkFiles(req.files)
             && req.body.password
             && req.body.bio
@@ -125,20 +125,20 @@ module.exports = {
             && req.body.contacts;
     },
 
-    checkMessageBody: function (req) {
+    checkMessageBody(req) {
         return (req.files.file || req.body.content) && req.body.chat;
     },
 
-    checkChatBody: function (req) {
+    checkChatBody(req) {
         return this.checkFiles(req.files) && req.body.about.length >= 0
             && req.body.chatName && req.body.shareName && req.body.members;
     },
 
-    validUrl: function (str) {
-        return /^((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/.test(str);
+    validUrl(str) {
+        return /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/.test(str);
     },
 
-    getImgId: function (url) {
+    getImgId(url) {
         return url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('.'));
     },
 
