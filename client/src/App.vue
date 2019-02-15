@@ -153,6 +153,11 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
+#app .container {
+  padding: 0;
+}
+
 div.reg {
   display: -ms-flexbox;
   display: -webkit-box;

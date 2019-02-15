@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import Vuetify from 'vuetify';
 import VueRouter from 'vue-router';
 import VeeValidate from 'vee-validate';
 import Notifications from 'vue-notification';
@@ -11,6 +12,7 @@ window.eventBus = new Vue();
 
 Vue.use(VueRouter);
 Vue.use(VeeValidate);
+Vue.use(Vuetify);
 Vue.use(new VueSocketIO({
     debug: false,
     // connection: 'https://boringmess.herokuapp.com/',

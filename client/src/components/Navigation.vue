@@ -76,6 +76,10 @@ export default {
   padding: 0;
 }
 
+.navbar .container {
+  padding: 0;
+}
+
 .navbar-light .navbar-nav .router-link-exact-active {
   padding-bottom: 12px;
   box-shadow: 0px 2px 0px 0px #161616;
