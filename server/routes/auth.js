@@ -23,6 +23,13 @@ router.post('/register', async (req, res) => {
         } else {
             const user = new User(0, login, hash, 0, fullname);
             const registred = await User.insertUser(user);
+            // const accessToken = jwt.sign(registred, config.jwt_secret, {
+            //     expiresIn: config.tokenLife
+            // });
+            // const refreshToken = jwt.sign(registred, config.jwt_secret, {
+            //     expiresIn: config.refreshTokenLife
+            // });
+            // return res.json({ user: registred, accessToken, refreshToken });
             req.login(registred, { session: false }, (error) => {
                 if (error) {
                     res.json({ error: error.toString() });

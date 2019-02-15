@@ -10,7 +10,9 @@ const config = {
     },
     salt: process.env['SALT'],
     secret: process.env['SECRET'],
-    jwt_secret: process.env['JWT_SECRET']
+    jwt_secret: process.env['JWT_SECRET'],
+    tokenLife: 900,
+    refreshTokenLife: 86400
 };
 
 module.exports = config;
