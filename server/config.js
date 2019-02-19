@@ -12,7 +12,11 @@ const config = {
     secret: process.env['SECRET'],
     jwt_secret: process.env['JWT_SECRET'],
     tokenLife: 900,
-    refreshTokenLife: 86400
+    refreshTokenLife: 86400,
+    google: {
+        clientID: process.env['GOOGLE_CLIENT_ID'],
+        clientSecret: process.env['GOOGLE_CLIENT_SECRET']
+    }
 };
 
 module.exports = config;

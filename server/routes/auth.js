@@ -70,4 +70,12 @@ router.post('/logout', Auth.verifyToken, (req, res) => {
     res.json(user);
 });
 
+router.post('/google', (req, res) => {
+    // todo get tokens from google api
+});
+
+router.get('/google/redirect', (req, res) => {
+    res.json('NORMALITY');
+});
+
 module.exports = router;

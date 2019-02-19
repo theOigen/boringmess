@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const User = require('../models/user');
 const config = require('../config');
 const LocalStrategy = require('passport-local').Strategy;
+const GoogleStrategy = require('passport-google-oauth20');
 const passportJWT = require('passport-jwt');
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
@@ -51,8 +52,15 @@ const JwtStrategy = new JWTStrategy({
     } catch (err) {
         done(err);
     }
-}
-);
+});
+
+const GStrategy = new GoogleStrategy({
+    callbackURL: '/auth/google/redirect',
+    clientID: config.google.clientID,
+    clientSecret: config.google.clientSecret
+}, () => {
+
+});
 
 function verifyToken(req, res, next) {
     const bearerHeader = req.headers['authorization'];
@@ -72,5 +80,6 @@ module.exports = {
     serializeUser,
     deserializeUser,
     LocalStrategy: LStrategy,
-    JWTStrategy: JwtStrategy
+    JWTStrategy: JwtStrategy,
+    GoogleStrategy: GStrategy
 };

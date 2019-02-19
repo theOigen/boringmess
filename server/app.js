@@ -38,6 +38,7 @@ app.use(busboyBodyParser({
 
 passport.use(Auth.LocalStrategy);
 passport.use(Auth.JWTStrategy);
+passport.use(Auth.GoogleStrategy);
 passport.serializeUser(Auth.serializeUser);
 passport.deserializeUser(Auth.deserializeUser);
 app.use(passport.initialize());
