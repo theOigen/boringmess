@@ -42,6 +42,9 @@
       <p class="mt-4 mb-2 text-muted">New here?
         <router-link to="/register">Create an account</router-link>
       </p>
+      <p class="mt-4 mb-2 text-muted">Have a google account?
+        <router-link to="/google/login">Login by using it</router-link>
+      </p>
     </form>
   </div>
 </template>

@@ -457,6 +457,18 @@ export const store = new Vuex.Store({
                     });
             });
         },
+        googleLogin(context, credentials) {
+            return new Promise((resolve, reject) => {
+                axios.post('/auth/google', credentials)
+                    .then(response => {
+                        console.log(response);
+                        resolve(response);
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            });
+        },
         isUsernameExist(context, username) {
             return new Promise((resolve, reject) => {
                 axios.get(`/api/v2/users/exist/${username}`)

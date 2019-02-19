@@ -1,15 +1,16 @@
-import Home from './components/Home';
-import Users from './components/users/Users';
-import Profile from './components/users/Profile';
-import Register from './components/auth/Register';
-import Login from './components/auth/Login';
-import Logout from './components/auth/Logout';
-import Chats from './components/chats/chatBox/chatsList/Chats';
-import NewChat from './components/chats/NewChat';
-import ChatProfile from './components/chats/ChatProfile';
-import NotFound from './components/errors/404';
-import About from './components/About';
-import API from './components/API';
+import Home from '@/components/Home';
+import Users from '@/components/users/Users';
+import Profile from '@/components/users/Profile';
+import Register from '@/components/auth/Register';
+import Login from '@/components/auth/Login';
+import GoogleLogin from '@/components/auth/GoogleLogin';
+import Logout from '@/components/auth/Logout';
+import Chats from '@/components/chats/chatBox/chatsList/Chats';
+import NewChat from '@/components/chats/NewChat';
+import ChatProfile from '@/components/chats/ChatProfile';
+import NotFound from '@/components/errors/404';
+import About from '@/components/About';
+import API from '@/components/API';
 
 const routes = [
   {
@@ -71,6 +72,14 @@ const routes = [
     path: '/login',
     name: 'login',
     component: Login,
+    meta: {
+      requiresVisitor: true
+    }
+  },
+  {
+    path: '/google/login',
+    name: 'google_login',
+    component: GoogleLogin,
     meta: {
       requiresVisitor: true
     }

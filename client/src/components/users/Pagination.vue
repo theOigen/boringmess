@@ -39,7 +39,7 @@ export default {
     },
     pageRange: {
       type: Number,
-      default: 3
+      default: 4
     },
     activeColor: {
       type: String,

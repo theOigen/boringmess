@@ -4,6 +4,7 @@ import VueRouter from 'vue-router';
 import VeeValidate from 'vee-validate';
 import Notifications from 'vue-notification';
 import VueSocketIO from 'vue-socket.io';
+import GoogleAuth from 'vue-google-oauth2';
 import App from './App';
 import routes from './routes';
 import { store } from './store/store';
@@ -13,6 +14,11 @@ window.eventBus = new Vue();
 Vue.use(VueRouter);
 Vue.use(VeeValidate);
 Vue.use(Vuetify);
+Vue.use(GoogleAuth, {
+    client_id: '670997545619-kk83v1n02fqn22qasg455snoa1j8gli0.apps.googleusercontent.com',
+    scope: 'profile',
+    promt: 'select_account'
+});
 Vue.use(new VueSocketIO({
     debug: false,
     // connection: 'https://boringmess.herokuapp.com/',

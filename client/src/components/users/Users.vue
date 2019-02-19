@@ -52,21 +52,7 @@
       <div v-else>
         <div class="notfound text-center">No users with login {{searchResult}}</div>
       </div>
-      <!-- <div v-if="users.length" id="pagination" class="row justify-content-center">
-        <nav aria-label="Page navigation example" align="center">
-          <ul class="pagination">
-            <li class="page-item" :class="{disabled : prevPage <= 0}">
-              <a id="prevPage" class="page-link" href="#" @click.prevent="prev">Prev</a>
-            </li>
-            <li class="page-item active">
-              <a id="currentPage" class="page-link" href="#">{{currPage}}</a>
-            </li>
-            <li class="page-item" :class="{disabled : nextPage <= 0}">
-              <a id="nextPage" class="page-link" href="#" @click.prevent="next">Next</a>
-            </li>
-          </ul>
-        </nav>
-      </div>-->
+      <!-- <v-pagination v-if="users.length" :total-visible="2" :dark="true" :length="totalPages"></v-pagination> -->
       <pagination
         v-if="users.length"
         class="center"
