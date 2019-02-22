@@ -461,11 +461,16 @@ export const store = new Vuex.Store({
             return new Promise((resolve, reject) => {
                 axios.post('/auth/google', credentials)
                     .then(response => {
-                        console.log(response);
-                        resolve(response);
+                        const token = response.data.token;
+                        const user = response.data.user;
+                        localStorage.setItem('jwt', token);
+                        context.commit('retrieveToken', { user, token });
+                        context.dispatch("retrieveChats");
+                        resolve(response.data.user);
                     })
                     .catch(error => {
                         console.error(error);
+                        reject(error);
                     });
             });
         },

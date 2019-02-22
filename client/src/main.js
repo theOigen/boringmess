@@ -16,7 +16,7 @@ Vue.use(VeeValidate);
 Vue.use(Vuetify);
 Vue.use(GoogleAuth, {
     client_id: '670997545619-kk83v1n02fqn22qasg455snoa1j8gli0.apps.googleusercontent.com',
-    scope: 'profile',
+    scope: 'profile email',
     promt: 'select_account'
 });
 Vue.use(new VueSocketIO({

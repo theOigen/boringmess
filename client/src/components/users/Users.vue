@@ -52,7 +52,6 @@
       <div v-else>
         <div class="notfound text-center">No users with login {{searchResult}}</div>
       </div>
-      <!-- <v-pagination v-if="users.length" :total-visible="2" :dark="true" :length="totalPages"></v-pagination> -->
       <pagination
         v-if="users.length"
         class="center"

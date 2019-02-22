@@ -7,20 +7,43 @@ import Vue from "vue";
 export default {
   created() {
     this.$gAuth
-      .getAuthCode()
-      .then(authCode => {
+      .signIn()
+      .then(googleUser => {
+        console.log("USER: ", googleUser);
+        const googleProf = googleUser.getBasicProfile();
+        console.log(
+          googleProf.getId(),
+          googleProf.getName(),
+          googleProf.getImageUrl(),
+          googleProf.getEmail()
+        );
         return this.$store.dispatch("googleLogin", {
-          code: authCode,
-          redirect_uri: "postmessage"
+          user: {
+            googleId: googleProf.getId(),
+            name: googleProf.getName(),
+            avaUrl: googleProf.getImageUrl(),
+            email: googleProf.getEmail()
+          }
         });
       })
-      .then(response => {
-        console.log(response);
+      .then(user => {
+        this.$socket.emit("loggedUser", user._id);
+        this.$router.push("/");
       })
       .catch(error => {
         console.error(error);
       });
   }
+  // beforeDestroy() {
+  //   this.$gAuth
+  //     .signOut()
+  //     .then(() => {
+  //       // things to do when sign-out succeeds
+  //     })
+  //     .catch(error => {
+  //       // things to do when sign-out fails
+  //     });
+  // }
 };
 </script>
 
