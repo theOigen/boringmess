@@ -5,6 +5,7 @@ const Auth = require('../modules/auth');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const config = require('../config');
+// const axios = require('axios');
 
 router.post('/register', async (req, res) => {
     const login = req.body.username;
@@ -23,13 +24,6 @@ router.post('/register', async (req, res) => {
         } else {
             const user = new User(0, login, hash, 0, fullname);
             const registred = await User.insertUser(user);
-            // const accessToken = jwt.sign(registred, config.jwt_secret, {
-            //     expiresIn: config.tokenLife
-            // });
-            // const refreshToken = jwt.sign(registred, config.jwt_secret, {
-            //     expiresIn: config.refreshTokenLife
-            // });
-            // return res.json({ user: registred, accessToken, refreshToken });
             req.login(registred, { session: false }, (error) => {
                 if (error) {
                     res.json({ error: error.toString() });
@@ -70,8 +64,25 @@ router.post('/logout', Auth.verifyToken, (req, res) => {
     res.json(user);
 });
 
-router.post('/google', (req, res) => {
+router.post('/google', async (req, res) => {
     // todo get tokens from google api
+    const user = req.body.user;
+    try {
+        let loggedInUser = null;
+        const foundedUser = await User.getByGoogleId(user.googleId);
+        if (foundedUser) {
+            loggedInUser = foundedUser;
+        } else {
+            const newUser = new User(-1, user.name.toLowerCase().replace(/ /g, '_'), '', 0, user.name,
+                new Date(), false, '', user.avaUrl, user.googleId);
+            loggedInUser = await User.insertUser(newUser);
+        }
+        const token = jwt.sign(loggedInUser.toObject(), config.jwt_secret);
+        return res.json({ user: loggedInUser, token });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ error: error.message });
+    }
 });
 
 router.get('/google/redirect', (req, res) => {

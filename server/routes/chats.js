@@ -5,6 +5,7 @@ const config = require('../config');
 const jwt = require('jsonwebtoken');
 const Auth = require('../modules/auth');
 const utils = require('../modules/utils');
+// const passport = require('passport');
 const router = express.Router();
 
 router.get('/', Auth.verifyToken, async (req, res) => {
@@ -16,6 +17,7 @@ router.get('/', Auth.verifyToken, async (req, res) => {
         currentCount = 0;
     }
     try {
+        // const user = req.user;
         const user = jwt.verify(req.token, config.jwt_secret);
         let limit = 8;
         if (isValid) {

@@ -1,14 +1,17 @@
 const mongoose = require('mongoose');
 
+const defaultAvaUrl = 'https://res.cloudinary.com/boring-messenger/image/upload/v1541626236/default.png';
+
 const UserSchema = new mongoose.Schema({
     login: { type: String, required: true, unique: true },
-    hashedPass: { type: String, required: true },
+    hashedPass: { type: String, required: false },
     fullname: { type: String, required: true },
-    avaUrl: { type: String, default: 'https://res.cloudinary.com/boring-messenger/image/upload/v1541626236/default.png' },
+    avaUrl: { type: String, default: defaultAvaUrl },
     bio: { type: String, required: false },
     role: { type: Number, default: 0 },
     registredAt: { type: Date, default: Date.now },
     isDisabled: { type: Boolean, default: false },
+    googleId: { type: Number, required: false, unique: true }
 });
 
 const UserModel = mongoose.model('User', UserSchema);
@@ -16,7 +19,7 @@ const UserModel = mongoose.model('User', UserSchema);
 class User {
     constructor(id = 0, login, hashedPass, role = 0, fullname = 'empty',
         registredAt = new Date(), isDisabled = false, bio = '',
-        avaUrl = 'https://res.cloudinary.com/boring-messenger/image/upload/v1541626236/default.png') {
+        avaUrl = defaultAvaUrl, googleId = '') {
         this.id = id;
         this.login = login;
         this.hashedPass = hashedPass;
@@ -26,6 +29,7 @@ class User {
         this.avaUrl = avaUrl;
         this.isDisabled = isDisabled;
         this.bio = bio;
+        this.googleId = googleId;
     }
 
     static isChatMember(user, members) {
@@ -43,7 +47,7 @@ class User {
     }
 
     static isDefaultAva(url) {
-        return url === 'https://res.cloudinary.com/boring-messenger/image/upload/v1541626236/default.png';
+        return url === defaultAvaUrl;
     }
 
     static validLogin(str) {
@@ -57,7 +61,7 @@ class User {
     }
 
     static validPassword(str) {
-        return typeof str === 'string' && /^\S+$/.test(str) && str.length >= 6;
+        return typeof str === 'string' && (str.length === 0 || (/^\S+$/.test(str) && str.length >= 6));
     }
 
     static validBio(str) {
@@ -77,11 +81,15 @@ class User {
     }
 
     static getByLogin(login) {
-        return UserModel.findOne({ login: login });
+        return UserModel.findOne({ login });
     }
 
-    static getByParams(login, hash) {
-        return UserModel.findOne({ login: login, hashedPass: hash });
+    static getByGoogleId(googleId) {
+        return UserModel.findOne({ googleId });
+    }
+
+    static getByParams(login, hashedPass) {
+        return UserModel.findOne({ login, hashedPass });
     }
 
     static insertUser(user) {
@@ -101,12 +109,13 @@ class User {
     }
 
     static validateUser(u) {
-        const password = u.hashedPass ? u.hashedPass : u.password;
+        const password = u.hashedPass !== undefined ? u.hashedPass : u.password;
+        console.log(password);
+        console.log(this.validPassword(password));
         return this.validLogin(u.login) && this.validFullName(u.fullname)
             && this.validBio(u.bio) && this.validPassword(password)
             && (typeof u.role === 'number' && (u.role === 0 || u.role === 1))
-            && (u.isDisabled === false || u.isDisabled === true)
-            && u.contacts;
+            && (u.isDisabled === false || u.isDisabled === true);
     }
 
 }

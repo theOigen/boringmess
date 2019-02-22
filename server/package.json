@@ -10,6 +10,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "axios": "^0.18.0",
         "basic-auth": "^2.0.1",
         "body-parser": "^1.18.3",
         "busboy-body-parser": "^0.3.2",
@@ -29,6 +30,7 @@
         "mustache": "^3.0.1",
         "mustache-express": "^1.2.8",
         "passport": "^0.4.0",
+        "passport-google-oauth": "^1.0.0",
         "passport-google-oauth20": "^1.0.0",
         "passport-http": "^0.3.0",
         "passport-jwt": "^4.0.0",

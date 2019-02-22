@@ -2,7 +2,7 @@ const crypto = require('crypto');
 const User = require('../models/user');
 const config = require('../config');
 const LocalStrategy = require('passport-local').Strategy;
-const GoogleStrategy = require('passport-google-oauth20');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const passportJWT = require('passport-jwt');
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
@@ -43,23 +43,36 @@ const LStrategy = new LocalStrategy(async (username, password, done) => {
 });
 
 const JwtStrategy = new JWTStrategy({
-    jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+    jwtFromRequest: ExtractJWT.fromAuthHeaderWithScheme('jwt'),
     secretOrKey: config.jwt_secret
 }, async (jwtPayload, done) => {
     try {
+        console.log('asdsads');
         const user = await User.getById(jwtPayload.id);
-        done(null, user);
+        if (user) {
+            done(null, user, { message: 'Logged in successfully' });
+        } else {
+            done(null, false, { message: 'Incorrect username or password' });
+        }
     } catch (err) {
         done(err);
     }
 });
 
 const GStrategy = new GoogleStrategy({
-    callbackURL: '/auth/google/redirect',
     clientID: config.google.clientID,
-    clientSecret: config.google.clientSecret
-}, () => {
-
+    clientSecret: config.google.clientSecret,
+    callbackURL: '/auth/google/callback'
+}, async (accessToken, refreshToken, profile, done) => {
+    try {
+        const user = await User.getByGoogleId({ googleId: profile.id });
+        if (!user) {
+            await User.insertUserByGoogle(profile);
+        }
+        done(null, user);
+    } catch (error) {
+        done(error);
+    }
 });
 
 function verifyToken(req, res, next) {
